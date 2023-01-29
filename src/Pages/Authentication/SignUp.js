@@ -4,9 +4,10 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../../Context/AuthProvider';
 
 const SignUp = () => {
-    const { user, createUser, updateUserInfo, loading, setLoading} = useContext(AuthContext)
+    const { user, createUser, updateUserInfo, loading, setLoading } = useContext(AuthContext)
 
     const handleSignup = e => {
+        setLoading(true);
         e.preventDefault()
         const form = e.target;
         const name = form.name.value;
@@ -14,7 +15,43 @@ const SignUp = () => {
         const dob = form.dob.value;
         const image = form.image.files[0]
         const password = form.password.value;
-        
+        const userData = {
+            name,
+            email,
+            dob
+        }
+        const formData = new FormData();
+        formData.append('image', image)
+        fetch(`https://api.imgbb.com/1/upload?key=${process.env.REACT_APP_imgbb_api_key}`, {
+            method: 'POST',
+            body: formData,
+        })
+            .then(res => res.json())
+            .then(imgData => {
+                const image = imgData?.data.display_url
+                createUser(email, password)
+                    .then(data => {
+                        const profile = {
+                            displayName: name,
+                            photoURL: image
+                        }
+                        updateUserInfo(profile)
+                            .then(() => {
+                                setLoading(false);
+                            })
+                            .catch(err => {
+                                console.error(err.message);
+                            })
+                            console.log();
+                        
+                    })
+                    .catch(err => {
+                        console.error(err.message);
+                    })
+            })
+            .catch(err => {
+                console.error(err.message);
+            })
     }
 
     return (
