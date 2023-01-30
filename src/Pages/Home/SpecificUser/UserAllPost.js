@@ -4,7 +4,7 @@ import React from "react";
 const UserAllPost = ({ post }) => {
   const { title, image, info, time } = post;
   return (
-    <div className="">
+    <div className="p-5">
       <div className="flex justify-between">
         <Typography variant="h5">{title}</Typography>
         <Avatar src={image} alt="" />
