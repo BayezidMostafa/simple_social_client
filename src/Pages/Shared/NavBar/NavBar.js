@@ -5,13 +5,15 @@ import {
   Typography,
   Button,
   IconButton,
+  Avatar,
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../../Context/AuthProvider";
 
 const NavBar = () => {
-  const { user, loading, setLoading, logInUser, userLogOut } = useContext(AuthContext)
+  const { user, userLogOut } = useContext(AuthContext)
   const [openNav, setOpenNav] = useState(false);
+  console.log(user);
 
   useEffect(() => {
     window.addEventListener(
@@ -32,6 +34,14 @@ const NavBar = () => {
     </ul>
   );
 
+  const handleLogOut = () => {
+    userLogOut()
+      .then(() => { })
+      .then(err => {
+        console.error(err.message);
+      })
+  }
+
   return (
     <Navbar color="cyan" variant="gradient" className="mx-auto py-2 px-4 lg:px-8 lg:py-4 rounded-none lg:rounded-md">
       <div className="container mx-auto flex items-center justify-between text-blue-gray-900">
@@ -48,7 +58,12 @@ const NavBar = () => {
         {
           user?.uid ?
             <>
-              <Button variant="gradient" color="yellow" size="md" className="hidden lg:inline-block">
+              <Button
+                onClick={handleLogOut}
+                variant="gradient"
+                color="yellow"
+                size="md"
+                className="hidden lg:inline-block">
                 <span className="text-gray-900" >Sign Out</span>
               </Button>
             </>
@@ -109,7 +124,7 @@ const NavBar = () => {
           {
             user?.uid ?
               <>
-                <Button variant="gradient" size="sm" fullWidth className="mb-2">
+                <Button onClick={handleLogOut} variant="gradient" size="sm" fullWidth className="mb-2">
                   <span>Sign Out</span>
                 </Button>
               </>

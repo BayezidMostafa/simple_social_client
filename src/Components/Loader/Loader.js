@@ -3,7 +3,7 @@ import { InfinitySpin } from 'react-loader-spinner';
 
 const Loader = () => {
     return (
-        <div className='min-h-screen flex justify-center items-center'>
+        <div className='min-h-[80vh] flex justify-center items-center'>
             <InfinitySpin
                 width='200'
                 color="#1ABCD1"
